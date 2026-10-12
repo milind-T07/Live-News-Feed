@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Live News Feed — Browse top headlines and search news articles using GNews." />
+  <title>News Feed — OJT Capstone</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="navbar-brand">Dev Agency</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
+      <div class="nav-links" id="nav-links">
+        <a href="https://iamshkzahid.github.io/team-agency-portfolio/">← Back to Portfolio</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Dark</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="section">
+    <div class="container">
+      <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="back-link">← Back to Portfolio</a>
+      <h1 class="section-title">Live News Feed</h1>
+
+      <!-- Search and Category Filters -->
+      <div class="news-controls">
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search news..."
+            aria-label="Search news"
+          />
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <div class="category-filters">
+          <button class="category-btn active" data-category="general">General</button>
+          <button class="category-btn" data-category="business">Business</button>
+          <button class="category-btn" data-category="technology">Technology</button>
+          <button class="category-btn" data-category="sports">Sports</button>
+          <button class="category-btn" data-category="health">Health</button>
+          <button class="category-btn" data-category="entertainment">Entertainment</button>
+          <button class="category-btn" data-category="science">Science</button>
+        </div>
+      </div>
+
+      <!-- News articles will be rendered here -->
+      <div id="news-container">
+        <!-- Content dynamically inserted by ui.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Dev Agency — News Feed | Powered by GNews</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/theme.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
