@@ -1,4 +1,19 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-  <rect rx='20' width='100' height='100' fill='#2a9d8f'/>
-  <text x='50' y='68' font-size='55' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>DA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="#090d16"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <circle cx="60" cy="60" r="46" fill="url(#glowGrad)"/>
+  <path d="M38 32H58C69.0457 32 78 40.9543 78 52V68C78 79.0457 69.0457 88 58 88H38V32Z" fill="url(#brandGrad)"/>
+  <path d="M48 44H57C62.5228 44 67 48.4772 67 54V66C67 71.5228 62.5228 76 57 76H48V44Z" fill="#090d16"/>
+  <circle cx="84" cy="36" r="6" fill="#38bdf8"/>
 </svg>

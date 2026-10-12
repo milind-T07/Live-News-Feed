@@ -1,91 +1,90 @@
-# Live News Feed
+# Dev Agency Dispatch — Live News Feed
 
-A live news feed application that fetches and displays real-time news articles using the [NewsAPI](https://newsapi.org/). Built as part of the **OJT Capstone Project — Track A (Dev Agency)**.
+A premium, production-grade digital editorial news discovery platform engineered with modern web standards, resilient API caching, and dark-first aesthetics. Part of the **Dev Agency Engineering Suite**.
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](LICENSE)
 
-- **NewsAPI Integration** — Fetches top headlines using `fetch()` and `async/await`
-- **Category Filtering** — Browse news by General, Business, Technology, Sports, Health, Entertainment, and Science
-- **Keyword Search** — Search for articles across all sources
-- **Loading States** — Visual spinner while articles are being fetched
-- **Error Handling** — User-friendly messages for API errors, network issues, and rate limits
-- **Empty State** — Clear messaging when no articles match the query
-- **Responsive Design** — Mobile-first card layout that adapts to all screen sizes
+---
 
-## Tech Stack
+## 🌟 Highlights & Key Features
 
-- HTML5 (semantic markup)
-- CSS3 (custom properties, grid, flexbox)
-- JavaScript ES6+ (async/await, fetch API, DOM manipulation)
-- [NewsAPI](https://newsapi.org/) — RESTful news data
+### 1. Digital Editorial Experience
+- **Dark-First Visual Architecture**: Obsidian navy palettes (`#07090e`), electric-violet primary accents (`#8b5cf6`), and subtle cyan highlights (`#38bdf8`).
+- **Typography & Hierarchy**: Powered by Google's *Plus Jakarta Sans* and *Inter* for crisp editorial readability.
+- **Two-Column Editorial Showcase**:
+  - **Featured Lead Story**: Large 16:9 cinematic lead image, source attribution, relative timestamp, read-time estimate, and direct read action.
+  - **Top Headlines Column**: Compact live stream of priority dispatches with thumbnails and timestamps.
+- **Responsive Stories Grid**: 3-column desktop layout, 2-column tablet view, and single-column mobile view with line-clamped headlines and summaries.
 
-## Setup
+### 2. Search & Discovery
+- **Keyword & Topic Search**: Search across millions of articles with instantaneous query response.
+- **Keyboard Shortcuts**: Press `/` anywhere to instantly focus the search bar; press `Escape` to clear.
+- **Trending Topics Strip**: Live, clickable topic pills (AI, Global Markets, Climate, Cybersecurity, Space, etc.) that immediately launch targeted queries.
+- **Dynamic Category Filter**: Scrollable category pill bar supporting Top Stories, Technology, Business, World, Science, Health, Sports, and Entertainment.
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/sauryamanbisen-art/live-news-feed.git
-   cd live-news-feed
-   ```
+### 3. Data Integrity & Problem Solutions
+- **Normalized Data Pipeline**: Accurately maps publisher, title, description, article links, publication timestamps, and source icons from NewsData.io.
+- **Zero Broken Images**: Integrated SVG editorial gradient fallbacks with category watermarks for articles without images or with broken URLs.
+- **Accurate Relative Timestamps**: Converts publication dates into clean relative times (`2h ago`, `Yesterday`, `Oct 11`).
+- **Deduplication Engine**: Automatically detects and filters duplicate stories across sources.
+- **In-Memory & Session Storage Caching**: 10-minute cache TTL prevents rate-limit depletion when navigating between categories.
+- **Skeleton Shimmer Loaders**: Layout-matched CSS shimmer placeholders eliminating Cumulative Layout Shift (CLS).
 
-2. Create your API configuration:
-   ```bash
-   cp config.example.js js/config.js
-   ```
+### 4. Bookmarks (Saved Articles)
+- **Persistent Bookmarks**: Save stories to `localStorage` with a single tap.
+- **Live Counter & View**: Navbar badge tracks saved articles count; dedicated Bookmarks view displays all saved stories even offline.
 
-3. Edit `js/config.js` and replace `YOUR_API_KEY_HERE` with your actual NewsAPI key.
-   Get a free key at [newsapi.org](https://newsapi.org/).
+### 5. Accessibility & Mobile Optimization
+- Dark/Light mode toggle with persistence.
+- Fluid responsive mobile navigation drawer.
+- Visible focus rings (`:focus-visible`) and WCAG-compliant color contrast.
+- Strict `prefers-reduced-motion` compliance.
 
-4. Open `index.html` in your browser (must be on localhost for the free API tier).
+---
 
-> **Note:** The free NewsAPI tier only works on `localhost`. It will not work on deployed/hosted sites.
+## 📂 Project Structure
 
-## Project Structure
-
-```
+```text
 live-news-feed/
-├── index.html              # Main HTML structure
-├── config.example.js       # API config template (copy to js/config.js)
+├── index.html              # Semantic HTML5 layout & SEO meta tags
+├── config.example.js       # Configuration template
+├── favicon.svg             # Branded vector favicon
 ├── css/
-│   └── style.css           # All styles including responsive
+│   └── style.css           # Complete design system & responsive styling
 ├── js/
-│   ├── config.js           # API key config (gitignored)
-│   ├── api.js              # NewsAPI fetch functions
-│   ├── ui.js               # DOM rendering (cards, loading, errors)
-│   └── main.js             # App initialization and event handlers
+│   ├── config.js           # API configuration (gitignored)
+│   ├── api.js              # Resilient API service, normalization & caching
+│   ├── ui.js               # DOM rendering, skeletons, relative time & fallbacks
+│   ├── main.js             # Application controller, search, bookmarks & sorting
+│   └── theme.js            # Dark/Light theme controller & mobile drawer
 ├── .gitignore
 └── README.md
 ```
 
-## Architecture
+---
 
-| File | Responsibility |
-|---|---|
-| `config.js` | API key and endpoint configuration |
-| `api.js` | `fetchTopHeadlines()`, `searchNews()`, `makeApiRequest()` with error handling |
-| `ui.js` | `renderArticles()`, `showLoading()`, `showNewsError()`, `setActiveCategory()` |
-| `main.js` | DOMContentLoaded init, search form handler, category filter handler |
+## 🚀 Quick Start
 
-## Error Handling Strategy
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/milind-T07/Live-News-Feed.git
+   cd Live-News-Feed
+   ```
 
-The application handles errors at multiple levels:
+2. **Configure your API Key:**
+   ```bash
+   cp config.example.js js/config.js
+   ```
+   Edit `js/config.js` with your [NewsData.io](https://newsdata.io/) API key.
 
-1. **API Key Validation** — Checks if the key is configured before making requests
-2. **HTTP Status Codes** — Specific messages for 401 (invalid key) and 429 (rate limit)
-3. **API Response Errors** — Handles non-"ok" status from NewsAPI
-4. **Network Errors** — Catches fetch failures (no internet, server down)
-5. **Empty Results** — Shows user-friendly message when no articles match
+3. **Launch the application:**
+   Open `index.html` directly in your browser or run a lightweight local server:
+   ```bash
+   npx serve .
+   ```
 
-## Responsive Design
+---
 
-- **Desktop (>768px)** — Multi-column grid layout with `auto-fill, minmax(300px, 1fr)`
-- **Tablet (≤768px)** — Single column layout, stacked search form
-- **Mobile (≤480px)** — Centered category filters, optimized touch targets
+## 🛡️ License
 
-## Author
-
-Sauryaman Bisen  
-
-## License
-
-This project is licensed under the MIT License.
-
+This project is licensed under the [MIT License](LICENSE).

@@ -1,66 +1,310 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Live News Feed — Browse top headlines and search news articles using GNews." />
-  <title>News Feed — OJT Capstone</title>
+  <meta name="description" content="Dev Agency Dispatch — A premium, real-time digital news discovery platform covering technology, business, science, and global events." />
+  <meta name="keywords" content="news, tech news, live news feed, business, science, digital editorial, dev agency" />
+  <meta name="theme-color" content="#07090e" />
+
+  <!-- OpenGraph Meta Tags -->
+  <meta property="og:title" content="Dev Agency Dispatch — Live News Feed" />
+  <meta property="og:description" content="Discover the stories shaping technology, business, science, and the world." />
+  <meta property="og:type" content="website" />
+
+  <title>Dev Agency Dispatch — Live News Feed</title>
+
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="navbar-brand">Dev Agency</a>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
-      <div class="nav-links" id="nav-links">
-        <a href="https://iamshkzahid.github.io/team-agency-portfolio/">← Back to Portfolio</a>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Dark</button>
+  <!-- Top Navigation Bar -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="brand-link" id="brand-home" aria-label="Dev Agency Dispatch Homepage">
+        <div class="brand-symbol">
+          <svg viewBox="0 0 40 40" fill="none" class="symbol-svg">
+            <rect width="40" height="40" rx="10" fill="url(#brandGrad)" />
+            <path d="M12 10H20C24.4183 10 28 13.5817 28 18V22C28 26.4183 24.4183 30 20 30H12V10Z" fill="#07090e" />
+            <path d="M16 14H19.5C22.5376 14 25 16.4624 25 19.5V20.5C25 23.5376 22.5376 26 19.5 26H16V14Z" fill="url(#brandGrad)" />
+            <circle cx="29" cy="11" r="3" fill="#38bdf8" />
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#8b5cf6" />
+                <stop offset="50%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <span class="brand-name">Dev Agency</span>
+          <span class="brand-tag">DISPATCH</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="#discover" id="nav-discover" class="nav-item active">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <span>Discover</span>
+        </a>
+        <a href="#bookmarks" id="nav-bookmarks" class="nav-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Bookmarks</span>
+          <span id="bookmark-count-badge" class="nav-badge" aria-label="Saved items count">0</span>
+        </a>
+        <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="nav-item portfolio-return" target="_blank" rel="noopener">
+          <span>← Back to Portfolio</span>
+        </a>
+      </nav>
+
+      <!-- Right Header Controls -->
+      <div class="header-actions">
+        <!-- Search Trigger / Shortcut Hint -->
+        <button type="button" class="quick-search-hint" onclick="document.getElementById('search-input')?.focus();" aria-label="Focus search input" title="Press / to search">
+          <svg class="search-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="search-hint-text">Search</span>
+          <kbd class="shortcut-key">/</kbd>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle visual theme" title="Toggle theme">
+          <!-- Populated by theme.js -->
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="mobile-drawer" aria-label="Mobile Navigation">
+      <div class="mobile-drawer-inner">
+        <a href="#discover" id="mobile-nav-discover" class="mobile-nav-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <span>Discover Stories</span>
+        </a>
+        <a href="#bookmarks" id="mobile-nav-bookmarks" class="mobile-nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Saved Articles</span>
+        </a>
+        <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="mobile-nav-link external-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+          </svg>
+          <span>← Back to Portfolio</span>
+        </a>
       </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Main Content -->
-  <main class="section">
+  <!-- Main Content Area -->
+  <main class="main-content">
     <div class="container">
-      <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="back-link">← Back to Portfolio</a>
-      <h1 class="section-title">Live News Feed</h1>
 
-      <!-- Search and Category Filters -->
-      <div class="news-controls">
-        <form class="search-form" id="search-form">
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Search news..."
-            aria-label="Search news"
-          />
-          <button type="submit" class="btn btn-primary">Search</button>
-        </form>
+      <!-- Editorial Hero & Search Section -->
+      <section class="editorial-hero" aria-label="Editorial Header">
+        <div class="hero-glow-orb"></div>
+        <div class="hero-inner">
+          <div class="hero-badge">
+            <span class="live-beacon">
+              <span class="beacon-core"></span>
+              <span class="beacon-ring"></span>
+            </span>
+            <span class="hero-badge-text">REAL-TIME GLOBAL DISPATCH</span>
+          </div>
 
-        <div class="category-filters">
-          <button class="category-btn active" data-category="general">General</button>
-          <button class="category-btn" data-category="business">Business</button>
-          <button class="category-btn" data-category="technology">Technology</button>
-          <button class="category-btn" data-category="sports">Sports</button>
-          <button class="category-btn" data-category="health">Health</button>
-          <button class="category-btn" data-category="entertainment">Entertainment</button>
-          <button class="category-btn" data-category="science">Science</button>
+          <h1 class="hero-headline">News, without the noise.</h1>
+          <p class="hero-subtext">Discover the stories shaping technology, business, science, and the world.</p>
+
+          <!-- Search Form -->
+          <div class="hero-search-wrapper">
+            <form id="search-form" class="hero-search-form" role="search">
+              <div class="search-input-group">
+                <svg class="search-lead-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  type="search"
+                  id="search-input"
+                  placeholder="Search topics, companies, or keywords... (Press / to focus)"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Search news topics, companies, and keywords"
+                />
+                <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Clear search input" style="display: none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <button type="submit" id="search-submit-btn" class="btn btn-primary btn-search-submit">
+                <span>Search</span>
+                <svg class="btn-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Active Search Indicator Banner -->
+          <div id="active-search-indicator" class="active-search-banner" style="display: none;" role="status">
+            <!-- Populated dynamically by ui.js -->
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- News articles will be rendered here -->
-      <div id="news-container">
-        <!-- Content dynamically inserted by ui.js -->
-      </div>
+      <!-- Category Filter Navigation Bar -->
+      <nav class="category-nav-bar" aria-label="News Categories">
+        <div class="category-scroll-container">
+          <div class="category-pills" role="tablist">
+            <button type="button" class="category-pill active" data-category="top" role="tab" aria-selected="true">
+              <span class="pill-dot"></span>
+              <span>Top Stories</span>
+            </button>
+            <button type="button" class="category-pill" data-category="technology" role="tab" aria-selected="false">
+              <span>Technology</span>
+            </button>
+            <button type="button" class="category-pill" data-category="business" role="tab" aria-selected="false">
+              <span>Business</span>
+            </button>
+            <button type="button" class="category-pill" data-category="world" role="tab" aria-selected="false">
+              <span>World</span>
+            </button>
+            <button type="button" class="category-pill" data-category="science" role="tab" aria-selected="false">
+              <span>Science</span>
+            </button>
+            <button type="button" class="category-pill" data-category="health" role="tab" aria-selected="false">
+              <span>Health</span>
+            </button>
+            <button type="button" class="category-pill" data-category="sports" role="tab" aria-selected="false">
+              <span>Sports</span>
+            </button>
+            <button type="button" class="category-pill" data-category="entertainment" role="tab" aria-selected="false">
+              <span>Entertainment</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Trending Topics Strip -->
+      <section class="trending-strip-section" aria-label="Live Trending Topics">
+        <div class="trending-strip-inner">
+          <div class="trending-label">
+            <svg class="flame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z"/>
+            </svg>
+            <span>TRENDING:</span>
+          </div>
+          <div class="trending-chips" id="trending-topics-container">
+            <button type="button" class="trend-chip" data-topic="Artificial Intelligence">AI & Robotics</button>
+            <button type="button" class="trend-chip" data-topic="Global Economy">Global Markets</button>
+            <button type="button" class="trend-chip" data-topic="Clean Energy">Climate & Clean Energy</button>
+            <button type="button" class="trend-chip" data-topic="Cybersecurity">Cybersecurity</button>
+            <button type="button" class="trend-chip" data-topic="Semiconductors">Semiconductors</button>
+            <button type="button" class="trend-chip" data-topic="Space Exploration">Space Exploration</button>
+            <button type="button" class="trend-chip" data-topic="Electric Vehicles">Electric Vehicles</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Story & Top Headlines Editorial Showcase -->
+      <section id="editorial-showcase" class="editorial-showcase-grid" aria-label="Featured Story and Top Headlines">
+        <!-- Rendered dynamically by ui.js -->
+      </section>
+
+      <!-- Latest Stories Section & Articles Grid -->
+      <section class="stories-feed-section" aria-label="Stories Feed">
+        <div class="feed-header-bar">
+          <div class="feed-header-left">
+            <span class="feed-indicator-line"></span>
+            <h2 id="stories-section-title" class="stories-feed-title">Latest Stories</h2>
+          </div>
+          <div class="feed-header-controls">
+            <!-- Sort Filter -->
+            <div class="sort-control-group">
+              <label for="sort-select" class="sort-label">Sort:</label>
+              <select id="sort-select" class="sort-select" aria-label="Sort articles">
+                <option value="latest" selected>Latest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </div>
+            <!-- Live Refresh Button -->
+            <button type="button" id="refresh-btn" class="refresh-feed-btn" aria-label="Refresh feed" title="Refresh latest articles">
+              <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- News Grid Container -->
+        <div id="news-container" class="news-container">
+          <!-- Populated by ui.js -->
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2025 Dev Agency — News Feed | Powered by GNews</p>
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="footer-brand-title">Dev Agency Dispatch</span>
+            <span class="footer-status-pill">
+              <span class="status-live-dot"></span>
+              Live Pipeline Active
+            </span>
+          </div>
+          <p class="footer-tagline">
+            Curated, real-time news intelligence engineered with modern web standards and high-reliability data pipelines.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="footer-link" target="_blank" rel="noopener">← Dev Agency Portfolio</a>
+          <a href="#site-header" class="footer-link">Back to Top ↑</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 Dev Agency. Built with precision for the modern editorial web.</p>
+        <p class="footer-source-note">Powered by NewsData.io REST Protocol.</p>
+      </div>
+    </div>
   </footer>
 
   <!-- Scripts -->
