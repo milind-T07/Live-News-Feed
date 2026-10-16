@@ -1,0 +1,57 @@
+name: Validate & Lint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    name: Code Integrity & Syntax Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify JavaScript Syntax
+        run: |
+          echo "Checking syntax of all JavaScript files..."
+          node --check js/api.js
+          node --check js/mock-data.js
+          node --check js/ui.js
+          node --check js/main.js
+          node --check js/theme.js
+          node --check config.example.js
+          node --check sw.js
+          echo "All JavaScript files passed syntax verification."
+
+      - name: Validate Web Manifest JSON
+        run: |
+          echo "Validating manifest.webmanifest JSON formatting..."
+          node -e '
+            const fs = require("fs");
+            const manifest = JSON.parse(fs.readFileSync("manifest.webmanifest", "utf8"));
+            if (!manifest.name || !manifest.icons || !manifest.start_url) {
+              throw new Error("Invalid web app manifest schema");
+            }
+            console.log("Web Manifest successfully validated.");
+          '
+
+      - name: Check HTML Semantic Structure
+        run: |
+          echo "Checking critical layout hooks in index.html..."
+          grep -q 'id="featured-story"' index.html || (echo "Missing featured-story" && exit 1)
+          grep -q 'id="headlines-list"' index.html || (echo "Missing headlines-list" && exit 1)
+          grep -q 'id="stories-grid"' index.html || (echo "Missing stories-grid" && exit 1)
+          grep -q 'id="api-key-dialog"' index.html || (echo "Missing api-key-dialog" && exit 1)
+          grep -q 'id="share-dialog"' index.html || (echo "Missing share-dialog" && exit 1)
+          grep -q 'id="reader-modal"' index.html || (echo "Missing reader-modal" && exit 1)
+          grep -q 'id="scroll-progress"' index.html || (echo "Missing scroll-progress" && exit 1)
+          echo "All critical structural elements verified."
