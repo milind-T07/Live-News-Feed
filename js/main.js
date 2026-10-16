@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initShareModal();
   initReaderModal();
   initScrollProgressBar();
+  initPwaServiceWorker();
   initGlobalDelegation();
   initKeyboardShortcuts();
 
@@ -578,7 +579,109 @@ function initGlobalDelegation() {
       }
       return;
     }
+
+    // 9. Export Bookmarks JSON
+    const exportBtn = e.target.closest("#export-bookmarks-btn");
+    if (exportBtn) {
+      e.preventDefault();
+      exportBookmarksToJson();
+      return;
+    }
+
+    // 10. Clear All Bookmarks
+    const clearAllBtn = e.target.closest("#clear-all-bookmarks-btn");
+    if (clearAllBtn) {
+      e.preventDefault();
+      if (confirm("Are you sure you want to remove all saved bookmarks?")) {
+        localStorage.removeItem(BOOKMARKS_STORAGE_KEY);
+        updateBookmarkBadgeCount();
+        showToast("All bookmarks cleared");
+        showBookmarksView();
+      }
+      return;
+    }
   });
+
+  // Handle bookmarks JSON file upload input
+  document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "import-bookmarks-input") {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        importBookmarksFromJson(file);
+      }
+      e.target.value = "";
+    }
+  });
+}
+
+/**
+ * Exports saved bookmarks as a downloadable JSON file.
+ */
+function exportBookmarksToJson() {
+  const bookmarks = getSavedArticles();
+  if (bookmarks.length === 0) {
+    showToast("No bookmarks to export");
+    return;
+  }
+
+  const dataStr = JSON.stringify(bookmarks, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `dev-agency-dispatch-bookmarks-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast(`Exported ${bookmarks.length} saved articles to JSON`);
+}
+
+/**
+ * Imports bookmarks from an uploaded JSON file, deduplicating with existing bookmarks.
+ */
+function importBookmarksFromJson(file) {
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!Array.isArray(imported)) {
+        showToast("Invalid bookmarks file format (expected JSON array)");
+        return;
+      }
+
+      let current = getSavedArticles();
+      let addedCount = 0;
+
+      for (const item of imported) {
+        if (!item || !item.id || !item.title) continue;
+        const exists = current.some(existing => existing.id === item.id || (existing.link && existing.link === item.link));
+        if (!exists) {
+          current.unshift(item);
+          addedCount++;
+        }
+      }
+
+      localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(current));
+      updateBookmarkBadgeCount();
+      showToast(`Imported ${addedCount} new stories to bookmarks`);
+      showBookmarksView();
+    } catch (err) {
+      showToast("Error parsing bookmarks JSON file");
+    }
+  };
+  reader.readAsText(file);
+}
+
+/**
+ * Registers PWA service worker for offline asset caching.
+ */
+function initPwaServiceWorker() {
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
 }
 
 /**

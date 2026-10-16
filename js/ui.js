@@ -625,8 +625,34 @@ function renderEditorialLayout(articles, options = {}) {
     if (editorialShowcase) editorialShowcase.style.display = "none";
     if (storiesTitle) storiesTitle.textContent = `Saved Articles (${articles.length})`;
 
+    const toolbarHtml = `
+      <div class="bookmarks-toolbar">
+        <div class="bookmarks-toolbar-left">
+          <span class="bookmarks-count-pill">${articles.length} bookmarked stor${articles.length === 1 ? "y" : "ies"}</span>
+        </div>
+        <div class="bookmarks-toolbar-actions">
+          <button type="button" id="export-bookmarks-btn" class="btn btn-secondary btn-bookmarks-tool" title="Export bookmarks as JSON">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            <span>Export JSON</span>
+          </button>
+          <label for="import-bookmarks-input" class="btn btn-secondary btn-bookmarks-tool btn-import-label" title="Import bookmarks from JSON">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+            </svg>
+            <span>Import JSON</span>
+            <input type="file" id="import-bookmarks-input" accept=".json,application/json" style="display:none;" />
+          </label>
+          <button type="button" id="clear-all-bookmarks-btn" class="btn btn-danger-subtle btn-bookmarks-tool" title="Remove all saved articles">
+            <span>Clear All</span>
+          </button>
+        </div>
+      </div>
+    `;
+
     let cardsHtml = articles.map(renderArticleCard).join("");
-    newsContainer.innerHTML = `<div class="news-grid">${cardsHtml}</div>`;
+    newsContainer.innerHTML = `${toolbarHtml}<div class="news-grid">${cardsHtml}</div>`;
     return;
   }
 

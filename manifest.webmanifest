@@ -1,0 +1,17 @@
+{
+  "name": "Dev Agency Dispatch — Live News Feed",
+  "short_name": "Dispatch",
+  "description": "Real-time digital editorial news discovery platform engineered with modern web standards.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07090e",
+  "theme_color": "#07090e",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
