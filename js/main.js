@@ -10,7 +10,8 @@ const appState = {
   activeView: "discover", // 'discover' | 'bookmarks'
   currentSort: "latest",   // 'latest' | 'oldest'
   articles: [],
-  isLoading: false
+  isLoading: false,
+  isFallbackPreview: false
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -51,11 +52,13 @@ async function loadCategory(category, forceRefresh = false) {
     const result = await fetchTopHeadlines(appState.currentCategory, forceRefresh);
 
     if (result.success) {
+      appState.isFallbackPreview = Boolean(result.isFallbackPreview);
       appState.articles = applySort(result.articles, appState.currentSort);
       renderEditorialLayout(appState.articles, {
         isSearch: false,
         category: appState.currentCategory,
-        view: "discover"
+        view: "discover",
+        isFallbackPreview: appState.isFallbackPreview
       });
     } else {
       showErrorState(result.error, () => loadCategory(appState.currentCategory, true));
@@ -88,12 +91,14 @@ async function executeSearch(query, forceRefresh = false) {
     const result = await searchNews(trimmed, forceRefresh);
 
     if (result.success) {
+      appState.isFallbackPreview = Boolean(result.isFallbackPreview);
       appState.articles = applySort(result.articles, appState.currentSort);
       renderEditorialLayout(appState.articles, {
         isSearch: true,
         query: trimmed,
         category: appState.currentCategory,
-        view: "discover"
+        view: "discover",
+        isFallbackPreview: appState.isFallbackPreview
       });
     } else {
       showErrorState(result.error, () => executeSearch(trimmed, true));
@@ -103,6 +108,7 @@ async function executeSearch(query, forceRefresh = false) {
     showErrorState("Search request failed. Please check your network.", () => executeSearch(trimmed, true));
   } finally {
     appState.isLoading = false;
+
   }
 }
 
@@ -405,6 +411,19 @@ function initGlobalDelegation() {
     // 5. Error state Configure API Key button
     const errorConfigKeyBtn = e.target.closest("#error-config-key-btn");
     if (errorConfigKeyBtn) {
+      e.preventDefault();
+      const dialog = document.getElementById("api-key-dialog");
+      if (dialog) {
+        const keyInput = document.getElementById("api-key-input");
+        if (keyInput) keyInput.value = getEffectiveApiKey();
+        dialog.showModal();
+      }
+      return;
+    }
+
+    // 6. Preview banner Configure API Key button
+    const bannerConfigKeyBtn = e.target.closest("#banner-config-key-btn");
+    if (bannerConfigKeyBtn) {
       e.preventDefault();
       const dialog = document.getElementById("api-key-dialog");
       if (dialog) {

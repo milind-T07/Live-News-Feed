@@ -211,6 +211,19 @@ async function fetchTopHeadlines(category, forceRefresh = false) {
 
   const apiKey = getEffectiveApiKey();
 
+  // If no API key configured, seamlessly serve curated editorial stories for instant zero-config preview
+  if (!apiKey) {
+    const fallbackStories = typeof getCuratedEditorialStories === "function"
+      ? getCuratedEditorialStories(resolvedCategory)
+      : [];
+    return {
+      success: true,
+      articles: fallbackStories,
+      isFallbackPreview: true,
+      error: null
+    };
+  }
+
   let url = `${NEWS_API_CONFIG.baseUrl}?`;
   url += `country=${NEWS_API_CONFIG.defaultCountry || "us"}`;
   url += `&language=${NEWS_API_CONFIG.defaultLang || "en"}`;
@@ -220,7 +233,7 @@ async function fetchTopHeadlines(category, forceRefresh = false) {
     url += `&category=${resolvedCategory}`;
   }
 
-  return await makeApiRequest(url, cacheKey);
+  return await makeApiRequest(url, cacheKey, resolvedCategory);
 }
 
 /**
@@ -243,25 +256,42 @@ async function searchNews(query, forceRefresh = false) {
 
   const apiKey = getEffectiveApiKey();
 
+  // If no API key, search within curated editorial dataset
+  if (!apiKey) {
+    const fallbackStories = typeof getCuratedEditorialStories === "function"
+      ? getCuratedEditorialStories(null, trimmed)
+      : [];
+    return {
+      success: true,
+      articles: fallbackStories,
+      isFallbackPreview: true,
+      error: null
+    };
+  }
+
   let url = `${NEWS_API_CONFIG.baseUrl}?`;
   url += `language=${NEWS_API_CONFIG.defaultLang || "en"}`;
   url += `&apikey=${apiKey}`;
   url += `&q=${encodeURIComponent(trimmed)}`;
 
-  return await makeApiRequest(url, cacheKey);
+  return await makeApiRequest(url, cacheKey, null, trimmed);
 }
 
 /**
  * Executes API request with fallback handling and parsing.
  */
-async function makeApiRequest(url, cacheKey) {
+async function makeApiRequest(url, cacheKey, fallbackCategory = "top", fallbackQuery = "") {
   try {
     const apiKey = getEffectiveApiKey();
     if (!apiKey) {
+      const fallbackStories = typeof getCuratedEditorialStories === "function"
+        ? getCuratedEditorialStories(fallbackCategory, fallbackQuery)
+        : [];
       return {
-        success: false,
-        articles: [],
-        error: "API key is not configured. Please supply a valid NewsData.io API key in Settings or config.js."
+        success: true,
+        articles: fallbackStories,
+        isFallbackPreview: true,
+        error: null
       };
     }
 
@@ -270,10 +300,25 @@ async function makeApiRequest(url, cacheKey) {
 
     if (!response.ok) {
       if (response.status === 401) {
-        return { success: false, articles: [], error: "Invalid API key credentials. Verify your key in config.js." };
+        return { success: false, articles: [], error: "Invalid API key credentials. Verify your key in API Settings." };
       }
       if (response.status === 403 || response.status === 429) {
-        return { success: false, articles: [], error: "API daily request quota reached. Please try again later." };
+        // Daily quota exhausted — serve stale cache or curated preview
+        if (cacheKey) {
+          const stale = getCachedData(cacheKey);
+          if (stale && stale.length > 0) {
+            return { success: true, articles: stale, isStale: true, error: "API daily quota reached. Serving cached dispatch." };
+          }
+        }
+        const fallbackStories = typeof getCuratedEditorialStories === "function"
+          ? getCuratedEditorialStories(fallbackCategory, fallbackQuery)
+          : [];
+        return {
+          success: true,
+          articles: fallbackStories,
+          isFallbackPreview: true,
+          error: "API daily request quota reached. Switched to Curated Editorial Preview."
+        };
       }
       const apiMsg = data.results?.message || data.errors?.[0] || data.message || `Server responded with HTTP ${response.status}`;
       return { success: false, articles: [], error: apiMsg };
@@ -303,7 +348,7 @@ async function makeApiRequest(url, cacheKey) {
   } catch (error) {
     console.error("News Feed API Request failed:", error);
 
-    // Attempt to recover stale cache if available
+    // 1. Attempt to recover stale cache if available
     if (cacheKey) {
       const stale = getCachedData(cacheKey);
       if (stale && stale.length > 0) {
@@ -314,6 +359,19 @@ async function makeApiRequest(url, cacheKey) {
           error: "Connection lost. Serving cached offline dispatch."
         };
       }
+    }
+
+    // 2. Fall back to curated mock data
+    const fallbackStories = typeof getCuratedEditorialStories === "function"
+      ? getCuratedEditorialStories(fallbackCategory, fallbackQuery)
+      : [];
+    if (fallbackStories.length > 0) {
+      return {
+        success: true,
+        articles: fallbackStories,
+        isFallbackPreview: true,
+        error: "Connection offline. Displaying curated editorial dispatch."
+      };
     }
 
     return {

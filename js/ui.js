@@ -503,6 +503,25 @@ function renderEditorialLayout(articles, options = {}) {
     }
   }
 
+  // Handle Curated Preview indicator banner
+  const previewModeBanner = document.getElementById("preview-mode-banner");
+  if (previewModeBanner) {
+    if (options.isFallbackPreview && options.view !== "bookmarks") {
+      previewModeBanner.style.display = "flex";
+      previewModeBanner.innerHTML = `
+        <div class="preview-banner-left">
+          <span class="preview-badge-pill">Curated Preview</span>
+          <span>Displaying editorial sample dispatches. Connect your personal NewsData.io key for live streaming.</span>
+        </div>
+        <button type="button" class="btn-preview-config" id="banner-config-key-btn">
+          <span>Configure API Key</span>
+        </button>
+      `;
+    } else {
+      previewModeBanner.style.display = "none";
+    }
+  }
+
   // 1. If no articles exist, show tailored empty state
   if (!articles || articles.length === 0) {
     if (editorialShowcase) editorialShowcase.style.display = "none";
