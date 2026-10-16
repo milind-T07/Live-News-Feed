@@ -194,6 +194,13 @@
                 </svg>
               </button>
             </form>
+
+            <!-- Recent Searches Strip -->
+            <div id="recent-searches-container" class="recent-searches-strip" style="display: none;">
+              <span class="recent-label">Recent:</span>
+              <div id="recent-chips" class="recent-chips"></div>
+              <button type="button" id="clear-recent-btn" class="clear-recent-btn" title="Clear recent searches">Clear</button>
+            </div>
           </div>
 
           <!-- Active Search Indicator Banner -->
@@ -275,6 +282,18 @@
             <h2 id="stories-section-title" class="stories-feed-title">Latest Stories</h2>
           </div>
           <div class="feed-header-controls">
+            <!-- Region Edition Selector -->
+            <div class="edition-control-group">
+              <label for="edition-select" class="sort-label">Region:</label>
+              <select id="edition-select" class="sort-select edition-select" aria-label="Select news region edition">
+                <option value="us" selected>US</option>
+                <option value="gb">UK</option>
+                <option value="ca">CA</option>
+                <option value="in">IN</option>
+                <option value="au">AU</option>
+              </select>
+            </div>
+
             <!-- Sort Filter -->
             <div class="sort-control-group">
               <label for="sort-select" class="sort-label">Sort:</label>

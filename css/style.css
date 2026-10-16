@@ -669,6 +669,64 @@ img {
   height: 15px;
 }
 
+/* Recent Searches Strip */
+.recent-searches-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.recent-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.recent-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.recent-chip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.recent-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+  background-color: var(--accent-subtle);
+}
+
+.clear-recent-btn {
+  background: none;
+  border: none;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 2px 4px;
+}
+
+.clear-recent-btn:hover {
+  color: #ef4444;
+}
+
 /* Active Search Banner */
 .active-search-banner {
   display: flex;
@@ -1423,6 +1481,7 @@ img {
   gap: 12px;
 }
 
+.edition-control-group,
 .sort-control-group {
   display: flex;
   align-items: center;

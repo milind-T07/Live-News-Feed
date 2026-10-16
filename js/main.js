@@ -94,6 +94,7 @@ async function executeSearch(query, forceRefresh = false) {
     const result = await searchNews(trimmed, forceRefresh);
 
     if (result.success) {
+      addRecentSearch(trimmed);
       appState.isFallbackPreview = Boolean(result.isFallbackPreview);
       appState.articles = applySort(result.articles, appState.currentSort);
       renderEditorialLayout(appState.articles, {
@@ -211,12 +212,75 @@ function updateNavViewState(activeView) {
 }
 
 /**
+// Storage key for search history
+const RECENT_SEARCHES_KEY = "dev_agency_recent_searches";
+
+/**
+ * Retrieves past search queries from localStorage.
+ */
+function getRecentSearches() {
+  try {
+    const raw = localStorage.getItem(RECENT_SEARCHES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+/**
+ * Persists a new query into recent searches history.
+ */
+function addRecentSearch(query) {
+  const trimmed = (query || "").trim();
+  if (!trimmed) return;
+  let list = getRecentSearches().filter(q => q.toLowerCase() !== trimmed.toLowerCase());
+  list.unshift(trimmed);
+  if (list.length > 5) list = list.slice(0, 5);
+  try {
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(list));
+  } catch (e) {}
+  renderRecentSearches();
+}
+
+/**
+ * Clears search history.
+ */
+function clearRecentSearches() {
+  localStorage.removeItem(RECENT_SEARCHES_KEY);
+  renderRecentSearches();
+}
+
+/**
+ * Renders clickable recent search chips.
+ */
+function renderRecentSearches() {
+  const container = document.getElementById("recent-searches-container");
+  const chipsContainer = document.getElementById("recent-chips");
+  if (!container || !chipsContainer) return;
+
+  const list = getRecentSearches();
+  if (list.length === 0) {
+    container.style.display = "none";
+    return;
+  }
+
+  container.style.display = "flex";
+  chipsContainer.innerHTML = list.map(q => `
+    <button type="button" class="recent-chip" data-query="${escapeHtml(q)}">${escapeHtml(q)}</button>
+  `).join("");
+}
+
+/**
  * Sets up Search form, clear button, and input handlers.
  */
 function initSearch() {
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search-input");
   const searchClearBtn = document.getElementById("search-clear-btn");
+  const recentContainer = document.getElementById("recent-searches-container");
+  const clearRecentBtn = document.getElementById("clear-recent-btn");
+
+  renderRecentSearches();
 
   if (searchForm && searchInput) {
     searchForm.addEventListener("submit", function (e) {
@@ -243,6 +307,26 @@ function initSearch() {
         }
       });
     }
+  }
+
+  if (recentContainer) {
+    recentContainer.addEventListener("click", function (e) {
+      const chip = e.target.closest(".recent-chip");
+      if (chip && searchInput) {
+        const query = chip.getAttribute("data-query");
+        if (query) {
+          searchInput.value = query;
+          if (searchClearBtn) searchClearBtn.style.display = "flex";
+          executeSearch(query);
+        }
+      }
+    });
+  }
+
+  if (clearRecentBtn) {
+    clearRecentBtn.addEventListener("click", function () {
+      clearRecentSearches();
+    });
   }
 }
 
@@ -308,10 +392,11 @@ function initTrendingTopics() {
 }
 
 /**
- * Sets up Sorting dropdown and Refresh button.
+ * Sets up Sorting dropdown, Regional Edition selector, and Refresh button.
  */
 function initSortControl() {
   const sortSelect = document.getElementById("sort-select");
+  const editionSelect = document.getElementById("edition-select");
   const refreshBtn = document.getElementById("refresh-btn");
 
   if (sortSelect) {
@@ -323,8 +408,27 @@ function initSortControl() {
         isSearch: Boolean(appState.currentQuery),
         query: appState.currentQuery,
         category: appState.currentCategory,
-        view: appState.activeView
+        view: appState.activeView,
+        isFallbackPreview: appState.isFallbackPreview
       });
+    });
+  }
+
+  if (editionSelect) {
+    const savedEdition = localStorage.getItem("dev_agency_country") || "us";
+    editionSelect.value = savedEdition;
+    if (typeof NEWS_API_CONFIG !== "undefined") {
+      NEWS_API_CONFIG.defaultCountry = savedEdition;
+    }
+
+    editionSelect.addEventListener("change", function () {
+      const newEdition = editionSelect.value;
+      if (typeof NEWS_API_CONFIG !== "undefined") {
+        NEWS_API_CONFIG.defaultCountry = newEdition;
+      }
+      localStorage.setItem("dev_agency_country", newEdition);
+      showToast(`Switched region edition to ${newEdition.toUpperCase()}`);
+      loadCategory(appState.currentCategory, true);
     });
   }
 
