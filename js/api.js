@@ -6,6 +6,55 @@
 // In-memory cache for fast tab switching
 const API_CACHE = new Map();
 
+// Storage key for user-configured API key
+const USER_API_KEY_STORAGE = "dev_agency_user_api_key";
+
+/**
+ * Initializes safe runtime configuration if config.js is omitted or missing.
+ */
+if (typeof window.NEWS_API_CONFIG === "undefined") {
+  window.NEWS_API_CONFIG = {
+    apiKey: "",
+    baseUrl: "https://newsdata.io/api/1/news",
+    defaultCountry: "us",
+    defaultLang: "en",
+    defaultCategory: "top",
+    pageSize: 10,
+    cacheTTL: 10 * 60 * 1000
+  };
+}
+
+/**
+ * Resolves the currently active API key (prioritizing custom key from localStorage).
+ */
+function getEffectiveApiKey() {
+  const customKey = localStorage.getItem(USER_API_KEY_STORAGE);
+  if (customKey && customKey.trim() && customKey !== "YOUR_API_KEY_HERE") {
+    return customKey.trim();
+  }
+  if (typeof NEWS_API_CONFIG !== "undefined" && NEWS_API_CONFIG.apiKey && NEWS_API_CONFIG.apiKey !== "YOUR_API_KEY_HERE") {
+    return NEWS_API_CONFIG.apiKey.trim();
+  }
+  return "";
+}
+
+/**
+ * Sets or clears the user-defined API key.
+ */
+function setCustomApiKey(key) {
+  if (key && key.trim()) {
+    localStorage.setItem(USER_API_KEY_STORAGE, key.trim());
+    if (typeof NEWS_API_CONFIG !== "undefined") {
+      NEWS_API_CONFIG.apiKey = key.trim();
+    }
+  } else {
+    localStorage.removeItem(USER_API_KEY_STORAGE);
+    if (typeof NEWS_API_CONFIG !== "undefined") {
+      NEWS_API_CONFIG.apiKey = "";
+    }
+  }
+}
+
 /**
  * Normalizes an article object to ensure consistent field names across sources.
  */
@@ -160,10 +209,12 @@ async function fetchTopHeadlines(category, forceRefresh = false) {
     }
   }
 
+  const apiKey = getEffectiveApiKey();
+
   let url = `${NEWS_API_CONFIG.baseUrl}?`;
   url += `country=${NEWS_API_CONFIG.defaultCountry || "us"}`;
   url += `&language=${NEWS_API_CONFIG.defaultLang || "en"}`;
-  url += `&apikey=${NEWS_API_CONFIG.apiKey}`;
+  url += `&apikey=${apiKey}`;
 
   if (resolvedCategory) {
     url += `&category=${resolvedCategory}`;
@@ -190,9 +241,11 @@ async function searchNews(query, forceRefresh = false) {
     }
   }
 
+  const apiKey = getEffectiveApiKey();
+
   let url = `${NEWS_API_CONFIG.baseUrl}?`;
   url += `language=${NEWS_API_CONFIG.defaultLang || "en"}`;
-  url += `&apikey=${NEWS_API_CONFIG.apiKey}`;
+  url += `&apikey=${apiKey}`;
   url += `&q=${encodeURIComponent(trimmed)}`;
 
   return await makeApiRequest(url, cacheKey);
@@ -203,11 +256,12 @@ async function searchNews(query, forceRefresh = false) {
  */
 async function makeApiRequest(url, cacheKey) {
   try {
-    if (!NEWS_API_CONFIG.apiKey || NEWS_API_CONFIG.apiKey === "YOUR_API_KEY_HERE") {
+    const apiKey = getEffectiveApiKey();
+    if (!apiKey) {
       return {
         success: false,
         articles: [],
-        error: "API key is not configured. Please supply a valid NewsData.io API key in js/config.js."
+        error: "API key is not configured. Please supply a valid NewsData.io API key in Settings or config.js."
       };
     }
 

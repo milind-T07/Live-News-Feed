@@ -655,6 +655,9 @@ function showErrorState(message, onRetry) {
             </svg>
             <span>Retry Connection</span>
           </button>
+          <button type="button" id="error-config-key-btn" class="btn btn-secondary">
+            <span>Configure API Key</span>
+          </button>
           <button type="button" id="fallback-browse-btn" class="btn btn-secondary">
             <span>Explore Saved Bookmarks</span>
           </button>

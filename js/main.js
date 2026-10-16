@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initCategoryFilters();
   initTrendingTopics();
   initSortControl();
+  initApiKeyModal();
   initGlobalDelegation();
   initKeyboardShortcuts();
 
@@ -400,7 +401,172 @@ function initGlobalDelegation() {
       showBookmarksView();
       return;
     }
+
+    // 5. Error state Configure API Key button
+    const errorConfigKeyBtn = e.target.closest("#error-config-key-btn");
+    if (errorConfigKeyBtn) {
+      e.preventDefault();
+      const dialog = document.getElementById("api-key-dialog");
+      if (dialog) {
+        const keyInput = document.getElementById("api-key-input");
+        if (keyInput) keyInput.value = getEffectiveApiKey();
+        dialog.showModal();
+      }
+      return;
+    }
   });
+}
+
+/**
+ * Sets up API Key Configuration Modal and status indicators.
+ */
+function initApiKeyModal() {
+  const dialog = document.getElementById("api-key-dialog");
+  const openBtn = document.getElementById("api-settings-btn");
+  const mobileOpenBtn = document.getElementById("mobile-api-settings-btn");
+  const closeBtn = document.getElementById("close-api-dialog");
+  const saveBtn = document.getElementById("save-api-key-btn");
+  const testBtn = document.getElementById("test-api-key-btn");
+  const clearBtn = document.getElementById("clear-api-key-btn");
+  const keyInput = document.getElementById("api-key-input");
+  const toggleVisibilityBtn = document.getElementById("toggle-key-visibility");
+  const statusBanner = document.getElementById("api-status-banner");
+  const statusText = document.getElementById("api-status-text");
+  const statusDot = document.getElementById("api-status-dot");
+
+  function updateStatusDisplay() {
+    const key = getEffectiveApiKey();
+    const hasKey = Boolean(key && key.length > 5);
+
+    if (statusDot) {
+      statusDot.classList.toggle("active", hasKey);
+      statusDot.setAttribute("title", hasKey ? "API Key Configured" : "No API Key Configured");
+    }
+
+    if (statusBanner && statusText) {
+      if (hasKey) {
+        const masked = key.slice(0, 6) + "..." + key.slice(-4);
+        statusBanner.className = "api-status-banner connected";
+        statusText.innerHTML = `Active API Key configured: <code>${escapeHtml(masked)}</code>`;
+      } else {
+        statusBanner.className = "api-status-banner";
+        statusText.textContent = "No personal API key configured. Provide a key to access live news dispatches.";
+      }
+    }
+  }
+
+  function openDialog() {
+    if (!dialog) return;
+    const currentKey = getEffectiveApiKey();
+    if (keyInput) {
+      keyInput.value = currentKey;
+    }
+    updateStatusDisplay();
+    dialog.showModal();
+  }
+
+  function closeDialog() {
+    if (!dialog) return;
+    dialog.close();
+  }
+
+  if (openBtn) openBtn.addEventListener("click", openDialog);
+  if (mobileOpenBtn) {
+    mobileOpenBtn.addEventListener("click", () => {
+      closeMobileMenu();
+      openDialog();
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener("click", closeDialog);
+
+  // Close when clicking dialog backdrop
+  if (dialog) {
+    dialog.addEventListener("click", (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        closeDialog();
+      }
+    });
+  }
+
+  // Toggle password visibility
+  if (toggleVisibilityBtn && keyInput) {
+    toggleVisibilityBtn.addEventListener("click", () => {
+      const isPass = keyInput.type === "password";
+      keyInput.type = isPass ? "text" : "password";
+      toggleVisibilityBtn.setAttribute("aria-label", isPass ? "Hide API key" : "Show API key");
+    });
+  }
+
+  // Save Key
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const newKey = keyInput ? keyInput.value.trim() : "";
+      if (!newKey) {
+        showToast("Please enter an API key or click Clear");
+        return;
+      }
+      setCustomApiKey(newKey);
+      updateStatusDisplay();
+      showToast("API Key saved successfully");
+      closeDialog();
+      loadCategory(appState.currentCategory, true);
+    });
+  }
+
+  // Test Key Connection
+  if (testBtn) {
+    testBtn.addEventListener("click", async () => {
+      const candidateKey = keyInput ? keyInput.value.trim() : "";
+      if (!candidateKey) {
+        showToast("Enter a key to test");
+        return;
+      }
+      testBtn.disabled = true;
+      testBtn.textContent = "Testing...";
+      try {
+        const testUrl = `${NEWS_API_CONFIG.baseUrl}?apikey=${candidateKey}&country=us&language=en&category=top`;
+        const res = await fetch(testUrl);
+        const data = await res.json();
+        if (res.ok && data.status === "success") {
+          statusBanner.className = "api-status-banner connected";
+          statusText.innerHTML = `<strong>Connected!</strong> API key valid (${data.totalResults || "dispatches"} available).`;
+          showToast("Connection successful! Key is valid.");
+        } else {
+          statusBanner.className = "api-status-banner";
+          const err = data.results?.message || data.message || "Invalid API key";
+          statusText.innerHTML = `<span style="color:#ef4444;">Connection failed:</span> ${escapeHtml(err)}`;
+          showToast("Test failed: " + err);
+        }
+      } catch (err) {
+        statusBanner.className = "api-status-banner";
+        statusText.innerHTML = `<span style="color:#ef4444;">Network error:</span> Unable to reach NewsData.io.`;
+        showToast("Network test failed.");
+      } finally {
+        testBtn.disabled = false;
+        testBtn.textContent = "Test Connection";
+      }
+    });
+  }
+
+  // Clear Key
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      setCustomApiKey("");
+      if (keyInput) keyInput.value = "";
+      updateStatusDisplay();
+      showToast("Custom API key removed");
+    });
+  }
+
+  // Initial status check
+  updateStatusDisplay();
 }
 
 /**

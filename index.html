@@ -87,6 +87,15 @@
           <kbd class="shortcut-key">/</kbd>
         </button>
 
+        <!-- API Key Settings Button -->
+        <button type="button" id="api-settings-btn" class="header-icon-btn api-settings-btn" aria-label="Configure API Key" title="API Key Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-4.5 4.5a6 6 0 1 0 2.5 2.5l4.5-4.5L18.5 9.5 20 8l-1.5-1.5L21 4.5 22 3.5 21 2z"/>
+            <circle cx="7.5" cy="16.5" r="1.5"/>
+          </svg>
+          <span class="api-status-dot" id="api-status-dot" title="Key status"></span>
+        </button>
+
         <!-- Theme Toggle Button -->
         <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle visual theme" title="Toggle theme">
           <!-- Populated by theme.js -->
@@ -118,6 +127,13 @@
           </svg>
           <span>Saved Articles</span>
         </a>
+        <button type="button" id="mobile-api-settings-btn" class="mobile-nav-link mobile-btn-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-4.5 4.5a6 6 0 1 0 2.5 2.5l4.5-4.5L18.5 9.5 20 8l-1.5-1.5L21 4.5 22 3.5 21 2z"/>
+            <circle cx="7.5" cy="16.5" r="1.5"/>
+          </svg>
+          <span>API Key Settings</span>
+        </button>
         <a href="https://iamshkzahid.github.io/team-agency-portfolio/" class="mobile-nav-link external-link" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
@@ -306,6 +322,71 @@
       </div>
     </div>
   </footer>
+
+  <!-- API Key Configuration Dialog -->
+  <dialog id="api-key-dialog" class="editorial-dialog" aria-labelledby="api-dialog-title">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <div class="dialog-icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-4.5 4.5a6 6 0 1 0 2.5 2.5l4.5-4.5L18.5 9.5 20 8l-1.5-1.5L21 4.5 22 3.5 21 2z"/>
+              <circle cx="7.5" cy="16.5" r="1.5"/>
+            </svg>
+          </div>
+          <div>
+            <h2 id="api-dialog-title" class="dialog-title">API Configuration</h2>
+            <p class="dialog-subtitle">Configure your personal NewsData.io credentials</p>
+          </div>
+        </div>
+        <button type="button" id="close-api-dialog" class="dialog-close-btn" aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="api-status-banner" id="api-status-banner">
+          <span class="status-indicator-dot"></span>
+          <span id="api-status-text">Checking status...</span>
+        </div>
+
+        <form id="api-key-form" class="dialog-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="api-key-input" class="form-label">NewsData.io API Key</label>
+              <a href="https://newsdata.io/register" target="_blank" rel="noopener" class="form-help-link">Get Free Key (200 req/day) ↗</a>
+            </div>
+            <div class="input-password-wrapper">
+              <input 
+                type="password" 
+                id="api-key-input" 
+                class="form-input" 
+                placeholder="pub_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" 
+                autocomplete="off" 
+                spellcheck="false"
+              />
+              <button type="button" id="toggle-key-visibility" class="toggle-visibility-btn" aria-label="Show or hide API key">
+                <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <p class="form-hint">Stored securely in your local browser storage. Never sent to any third party.</p>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="button" id="save-api-key-btn" class="btn btn-primary">Save &amp; Reload Feed</button>
+            <button type="button" id="test-api-key-btn" class="btn btn-secondary">Test Connection</button>
+            <button type="button" id="clear-api-key-btn" class="btn btn-danger-subtle">Clear Key</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Scripts -->
   <script src="js/theme.js"></script>
