@@ -992,12 +992,45 @@ img {
   backdrop-filter: blur(8px);
 }
 
-/* Bookmark Buttons */
-.bookmark-btn {
+/* Card Action Overlay & Buttons */
+.card-action-overlay {
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-pill-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(7, 9, 14, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.action-pill-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.action-pill-btn:hover {
+  background-color: rgba(7, 9, 14, 0.95);
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  transform: scale(1.08);
+}
+
+.bookmark-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1028,6 +1061,35 @@ img {
 .bookmark-icon {
   width: 17px;
   height: 17px;
+}
+
+.headline-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mini-action-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.mini-action-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mini-action-btn:hover {
+  color: var(--accent-cyan);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Featured Content */
@@ -2171,6 +2233,114 @@ img {
   background: none;
   text-align: left;
   cursor: pointer;
+}
+
+/* Share Story Dialog Specifics */
+.share-preview-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.share-preview-meta {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.share-preview-title {
+  font-family: var(--font-editorial);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.share-link-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.share-link-input {
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  padding-right: 14px;
+  background-color: var(--bg-surface);
+}
+
+.btn-copy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn-copy-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.social-share-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.social-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.social-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.social-btn.social-x:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.social-btn.social-linkedin:hover {
+  color: #0a66c2;
+  border-color: #0a66c2;
+  background-color: rgba(10, 102, 194, 0.1);
+}
+
+.social-btn.social-whatsapp:hover {
+  color: #25d366;
+  border-color: #25d366;
+  background-color: rgba(37, 211, 102, 0.1);
+}
+
+.social-btn.social-reddit:hover {
+  color: #ff4500;
+  border-color: #ff4500;
+  background-color: rgba(255, 69, 0, 0.1);
 }
 
 /* --------------------------------------------------------------------------

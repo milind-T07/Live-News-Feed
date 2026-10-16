@@ -393,6 +393,87 @@
     </div>
   </dialog>
 
+  <!-- Share Story Dialog -->
+  <dialog id="share-dialog" class="editorial-dialog share-dialog" aria-labelledby="share-dialog-title">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <div class="dialog-icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </div>
+          <div>
+            <h2 id="share-dialog-title" class="dialog-title">Share Story</h2>
+            <p class="dialog-subtitle">Distribute dispatch across your network</p>
+          </div>
+        </div>
+        <button type="button" id="close-share-dialog" class="dialog-close-btn" aria-label="Close share dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <!-- Story Preview Card -->
+        <div class="share-preview-card" id="share-preview-card">
+          <div class="share-preview-meta">
+            <span id="share-preview-source" class="share-preview-source">Source</span>
+            <span class="meta-separator">•</span>
+            <span id="share-preview-time" class="share-preview-time">Recent</span>
+          </div>
+          <h4 id="share-preview-title" class="share-preview-title">Story Title</h4>
+        </div>
+
+        <!-- Quick Copy Link Box -->
+        <div class="share-link-group">
+          <input type="text" id="share-link-input" class="form-input share-link-input" readonly />
+          <button type="button" id="copy-share-link-btn" class="btn btn-primary btn-copy-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy Link</span>
+          </button>
+        </div>
+
+        <!-- Social Share Buttons -->
+        <div class="social-share-row">
+          <a href="#" id="share-x-btn" target="_blank" rel="noopener" class="social-btn social-x" title="Share to X">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <span>X (Twitter)</span>
+          </a>
+          <a href="#" id="share-linkedin-btn" target="_blank" rel="noopener" class="social-btn social-linkedin" title="Share to LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="#" id="share-whatsapp-btn" target="_blank" rel="noopener" class="social-btn social-whatsapp" title="Share via WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+          <a href="#" id="share-reddit-btn" target="_blank" rel="noopener" class="social-btn social-reddit" title="Share to Reddit">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.703zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.096.35.35 0 0 0 0 .486c.72.72 1.802 1.09 2.947 1.09 1.146 0 2.228-.37 2.948-1.09a.35.35 0 0 0 0-.486.327.327 0 0 0-.486 0c-.57.57-1.46.858-2.462.858-.999 0-1.89-.288-2.46-.858a.327.327 0 0 0-.256-.096z"/>
+            </svg>
+            <span>Reddit</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Scripts -->
   <script src="js/theme.js"></script>
   <script src="js/config.js"></script>

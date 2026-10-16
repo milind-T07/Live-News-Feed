@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initTrendingTopics();
   initSortControl();
   initApiKeyModal();
+  initShareModal();
   initGlobalDelegation();
   initKeyboardShortcuts();
 
@@ -433,7 +434,124 @@ function initGlobalDelegation() {
       }
       return;
     }
+
+    // 7. Share button click
+    const shareBtn = e.target.closest('[data-action="share"]');
+    if (shareBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = shareBtn.getAttribute("data-article-id");
+      let article = appState.articles.find(a => a.id === articleId);
+      if (!article) {
+        article = getSavedArticles().find(a => a.id === articleId);
+      }
+      if (article) {
+        handleArticleShare(article);
+      }
+      return;
+    }
   });
+}
+
+/**
+ * Handles sharing via Web Share API or falls back to Share Dialog.
+ */
+async function handleArticleShare(article) {
+  if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+    try {
+      await navigator.share({
+        title: article.title,
+        text: article.description,
+        url: article.link
+      });
+      return;
+    } catch (err) {
+      if (err.name === "AbortError") return;
+    }
+  }
+
+  openShareModal(article);
+}
+
+/**
+ * Populates and opens the Share Dialog.
+ */
+function openShareModal(article) {
+  const dialog = document.getElementById("share-dialog");
+  if (!dialog) return;
+
+  const titleEl = document.getElementById("share-preview-title");
+  const sourceEl = document.getElementById("share-preview-source");
+  const timeEl = document.getElementById("share-preview-time");
+  const linkInput = document.getElementById("share-link-input");
+
+  if (titleEl) titleEl.textContent = article.title;
+  if (sourceEl) sourceEl.textContent = article.sourceName;
+  if (timeEl) timeEl.textContent = formatRelativeTime(article.pubDate);
+  if (linkInput) linkInput.value = article.link;
+
+  const encodedUrl = encodeURIComponent(article.link);
+  const encodedTitle = encodeURIComponent(article.title);
+
+  const xBtn = document.getElementById("share-x-btn");
+  const linkedInBtn = document.getElementById("share-linkedin-btn");
+  const whatsAppBtn = document.getElementById("share-whatsapp-btn");
+  const redditBtn = document.getElementById("share-reddit-btn");
+
+  if (xBtn) xBtn.href = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+  if (linkedInBtn) linkedInBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+  if (whatsAppBtn) whatsAppBtn.href = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+  if (redditBtn) redditBtn.href = `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+
+  dialog.showModal();
+}
+
+/**
+ * Sets up Share modal event listeners.
+ */
+function initShareModal() {
+  const dialog = document.getElementById("share-dialog");
+  const closeBtn = document.getElementById("close-share-dialog");
+  const copyBtn = document.getElementById("copy-share-link-btn");
+  const linkInput = document.getElementById("share-link-input");
+
+  if (closeBtn && dialog) {
+    closeBtn.addEventListener("click", () => dialog.close());
+  }
+
+  if (dialog) {
+    dialog.addEventListener("click", (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        dialog.close();
+      }
+    });
+  }
+
+  if (copyBtn && linkInput) {
+    copyBtn.addEventListener("click", async () => {
+      const url = linkInput.value;
+      if (!url) return;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          linkInput.select();
+          document.execCommand("copy");
+        }
+        showToast("Story link copied to clipboard!");
+      } catch (err) {
+        linkInput.select();
+        showToast("Link selected. Press Ctrl+C/Cmd+C to copy");
+      }
+    });
+  }
 }
 
 /**

@@ -299,18 +299,36 @@ function renderFeaturedStory(article) {
           <span class="category-badge featured-badge">${escapeHtml(category)}</span>
           <span class="lead-tag">Featured Lead</span>
         </div>
-        <button 
-          type="button" 
-          class="bookmark-btn ${isSaved ? "active" : ""}" 
-          data-action="bookmark"
-          data-article-id="${escapeHtml(article.id)}"
-          aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
-          title="${isSaved ? "Remove bookmark" : "Save for later"}"
-        >
-          <svg class="bookmark-icon" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
-        </button>
+        <div class="card-action-overlay">
+          <button 
+            type="button" 
+            class="action-pill-btn share-action-btn" 
+            data-action="share"
+            data-article-id="${escapeHtml(article.id)}"
+            aria-label="Share article"
+            title="Share story"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+          <button 
+            type="button" 
+            class="bookmark-btn ${isSaved ? "active" : ""}" 
+            data-action="bookmark"
+            data-article-id="${escapeHtml(article.id)}"
+            aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
+            title="${isSaved ? "Remove bookmark" : "Save for later"}"
+          >
+            <svg class="bookmark-icon" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div class="featured-content">
@@ -382,17 +400,35 @@ function renderHeadlineItem(article) {
         </h3>
         <div class="headline-source-row">
           <span class="source-name">${escapeHtml(article.sourceName)}</span>
-          <button 
-            type="button" 
-            class="mini-bookmark-btn ${isSaved ? "active" : ""}" 
-            data-action="bookmark"
-            data-article-id="${escapeHtml(article.id)}"
-            aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
-          >
-            <svg viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-            </svg>
-          </button>
+          <div class="headline-actions">
+            <button 
+              type="button" 
+              class="mini-action-btn share-action-btn" 
+              data-action="share"
+              data-article-id="${escapeHtml(article.id)}"
+              aria-label="Share article"
+              title="Share story"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </button>
+            <button 
+              type="button" 
+              class="mini-bookmark-btn ${isSaved ? "active" : ""}" 
+              data-action="bookmark"
+              data-article-id="${escapeHtml(article.id)}"
+              aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
+            >
+              <svg viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </article>
@@ -425,18 +461,36 @@ function renderArticleCard(article) {
         <div class="card-badge-wrap">
           <span class="category-badge">${escapeHtml(category)}</span>
         </div>
-        <button 
-          type="button" 
-          class="bookmark-btn ${isSaved ? "active" : ""}" 
-          data-action="bookmark"
-          data-article-id="${escapeHtml(article.id)}"
-          aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
-          title="${isSaved ? "Remove bookmark" : "Save for later"}"
-        >
-          <svg class="bookmark-icon" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
-        </button>
+        <div class="card-action-overlay">
+          <button 
+            type="button" 
+            class="action-pill-btn share-action-btn" 
+            data-action="share"
+            data-article-id="${escapeHtml(article.id)}"
+            aria-label="Share article"
+            title="Share story"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+          <button 
+            type="button" 
+            class="bookmark-btn ${isSaved ? "active" : ""}" 
+            data-action="bookmark"
+            data-article-id="${escapeHtml(article.id)}"
+            aria-label="${isSaved ? "Remove from bookmarks" : "Save article"}"
+            title="${isSaved ? "Remove bookmark" : "Save for later"}"
+          >
+            <svg class="bookmark-icon" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div class="article-content">
