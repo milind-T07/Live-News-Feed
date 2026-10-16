@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initSortControl();
   initApiKeyModal();
   initShareModal();
+  initReaderModal();
+  initScrollProgressBar();
   initGlobalDelegation();
   initKeyboardShortcuts();
 
@@ -369,6 +371,12 @@ function initGlobalDelegation() {
           svg.setAttribute("fill", isNowSaved ? "currentColor" : "none");
         }
 
+        // Update reader modal bookmark label if active
+        const readerBtnText = document.getElementById("reader-bookmark-text");
+        if (readerBtnText && bookmarkBtn.id === "reader-bookmark-btn") {
+          readerBtnText.textContent = isNowSaved ? "Saved" : "Save";
+        }
+
         // If currently viewing bookmarks and article was removed, re-render bookmarks
         if (appState.activeView === "bookmarks") {
           showBookmarksView();
@@ -450,7 +458,117 @@ function initGlobalDelegation() {
       }
       return;
     }
+
+    // 8. Quick read preview button click
+    const quickReadBtn = e.target.closest('[data-action="quick-read"]');
+    if (quickReadBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = quickReadBtn.getAttribute("data-article-id");
+      let article = appState.articles.find(a => a.id === articleId);
+      if (!article) {
+        article = getSavedArticles().find(a => a.id === articleId);
+      }
+      if (article) {
+        openReaderModal(article);
+      }
+      return;
+    }
   });
+}
+
+/**
+ * Updates dynamic scroll reading progress indicator at page top.
+ */
+function initScrollProgressBar() {
+  const bar = document.getElementById("scroll-progress-bar");
+  if (!bar) return;
+
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = `${Math.min(100, Math.max(0, scrollPercent))}%`;
+  }, { passive: true });
+}
+
+/**
+ * Populates and displays the Reader Preview Modal.
+ */
+function openReaderModal(article) {
+  const dialog = document.getElementById("reader-modal");
+  if (!dialog) return;
+
+  const img = document.getElementById("reader-modal-img");
+  const categoryPill = document.getElementById("reader-category-pill");
+  const sourceName = document.getElementById("reader-source-name");
+  const pubTime = document.getElementById("reader-pub-time");
+  const readTime = document.getElementById("reader-read-time");
+  const title = document.getElementById("reader-modal-title");
+  const summary = document.getElementById("reader-modal-summary");
+  const openExternal = document.getElementById("reader-open-external");
+  const bookmarkBtn = document.getElementById("reader-bookmark-btn");
+  const shareBtn = document.getElementById("reader-share-btn");
+  const bookmarkText = document.getElementById("reader-bookmark-text");
+
+  const category = getPrimaryCategory(article);
+  const fallbackSvg = getCategoryFallbackSvg(category);
+
+  if (img) {
+    img.src = article.imageUrl || fallbackSvg;
+    img.alt = article.title;
+    img.onerror = () => { img.src = fallbackSvg; };
+  }
+
+  if (categoryPill) categoryPill.textContent = category;
+  if (sourceName) sourceName.textContent = article.sourceName;
+  if (pubTime) pubTime.textContent = formatRelativeTime(article.pubDate);
+  if (readTime) readTime.textContent = estimateReadTime(article.title + " " + article.description);
+  if (title) title.textContent = article.title;
+  if (summary) summary.textContent = article.description;
+  if (openExternal) openExternal.href = article.link;
+
+  if (bookmarkBtn) {
+    bookmarkBtn.setAttribute("data-article-id", article.id);
+    const isSaved = isArticleSaved(article.id);
+    bookmarkBtn.classList.toggle("active", isSaved);
+    if (bookmarkText) bookmarkText.textContent = isSaved ? "Saved" : "Save";
+    const svg = bookmarkBtn.querySelector("svg");
+    if (svg) svg.setAttribute("fill", isSaved ? "currentColor" : "none");
+  }
+
+  if (shareBtn) {
+    shareBtn.setAttribute("data-article-id", article.id);
+  }
+
+  dialog.showModal();
+}
+
+/**
+ * Sets up Quick Reader modal event listeners.
+ */
+function initReaderModal() {
+  const dialog = document.getElementById("reader-modal");
+  const closeBtn = document.getElementById("close-reader-modal");
+
+  if (closeBtn && dialog) {
+    closeBtn.addEventListener("click", () => dialog.close());
+  }
+
+  if (dialog) {
+    dialog.addEventListener("click", (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        dialog.close();
+      }
+    });
+  }
 }
 
 /**

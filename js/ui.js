@@ -354,6 +354,13 @@ function renderFeaturedStory(article) {
         </p>
 
         <div class="featured-actions">
+          <button type="button" class="btn btn-secondary btn-quick-preview" data-action="quick-read" data-article-id="${escapeHtml(article.id)}" title="Quick preview without leaving feed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Quick Preview</span>
+          </button>
           <a href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-editorial">
             <span>Read Full Story</span>
             <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -401,6 +408,19 @@ function renderHeadlineItem(article) {
         <div class="headline-source-row">
           <span class="source-name">${escapeHtml(article.sourceName)}</span>
           <div class="headline-actions">
+            <button 
+              type="button" 
+              class="mini-action-btn quick-read-action-btn" 
+              data-action="quick-read"
+              data-article-id="${escapeHtml(article.id)}"
+              aria-label="Quick preview article"
+              title="Quick preview story"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
             <button 
               type="button" 
               class="mini-action-btn share-action-btn" 
@@ -514,12 +534,21 @@ function renderArticleCard(article) {
 
         <div class="card-footer">
           <span class="read-estimate">${escapeHtml(readTime)}</span>
-          <a href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer" class="read-link">
-            <span>Read Story</span>
-            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M7 17L17 7M17 7H7M17 7V17"/>
-            </svg>
-          </a>
+          <div class="card-footer-actions">
+            <button type="button" class="btn-quick-preview-pill" data-action="quick-read" data-article-id="${escapeHtml(article.id)}" title="Quick preview story">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <span>Preview</span>
+            </button>
+            <a href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer" class="read-link">
+              <span>Read</span>
+              <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </article>
