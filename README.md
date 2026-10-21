@@ -9,15 +9,16 @@ A premium, production-grade digital editorial news discovery platform engineered
 
 ## 🌟 Highlights & Key Features
 
-### 1. Digital Editorial Experience
-- **Dark-First Visual Architecture**: Obsidian navy palettes (`#07090e`), electric-violet primary accents (`#8b5cf6`), and subtle cyan highlights (`#38bdf8`).
-- **Typography & Hierarchy**: Powered by Google's *Plus Jakarta Sans* and *Inter* for crisp editorial readability.
-- **Dynamic Reading Progress Bar**: Real-time reading depth indicator across the top of the viewport tracking your scroll position.
-- **Two-Column Editorial Showcase**:
-  - **Featured Lead Story**: Cinematic 16:9 lead presentation, source attribution, relative timestamp, read-time estimate, quick reader, and share action.
-  - **Top Headlines Column**: Compact live stream of priority dispatches with thumbnails, quick view, and timestamps.
-- **Responsive Stories Grid**: 3-column desktop layout, 2-column tablet view, and single-column mobile view with line-clamped headlines and summaries.
-- **In-App Quick Reader Modal**: Preview full article content and lead excerpt within an editorial modal without navigating away from your feed.
+### 1. Modern Minimalist Editorial Design
+- **Refined Obsidian & Slate Architecture**: Deep obsidian background (`#090b10`), clean slate surfaces (`#0e121b`), subtle hairline borders (`rgba(255, 255, 255, 0.07)`), and elegant electric indigo accents (`#6366f1`).
+- **De-cluttered Layout & Breathing Room**: Streamlined hero header, unified compact floating search bar, and clean airy component spacing eliminating visual noise.
+- **Precision Typography & Hierarchy**: Powered by Google's *Plus Jakarta Sans* and *Inter* with tight negative letter-spacing and clean line heights.
+- **Dynamic Reading Progress Bar**: Real-time reading depth indicator across the top of the viewport tracking scroll position.
+- **Refined Two-Column Editorial Showcase**:
+  - **Featured Lead Story**: Cinematic 16:9 lead presentation with clean glassmorphic category badge, publisher attribution, relative timestamp, read-time estimate, quick reader, and share action.
+  - **Top Headlines Column**: Compact, clean live stream of priority dispatches with rounded thumbnails, quick view, and timestamps.
+- **Spacious Stories Grid**: 3-column desktop layout, 2-column tablet view, and single-column mobile view with uncluttered cards, clean action buttons, and line-clamped excerpts.
+- **In-App Quick Reader Modal**: Preview full article content and lead excerpt within a backdrop-blurred editorial modal without navigating away from your feed.
 
 ### 2. Search & Discovery
 - **Keyword & Topic Search**: Search across millions of global articles with instantaneous query response.
