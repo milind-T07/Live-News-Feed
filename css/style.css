@@ -7,22 +7,22 @@
    1. CSS RESET & TOKENS
    -------------------------------------------------------------------------- */
 :root {
-  /* Color Palette - Dark Default */
-  --bg-canvas: #07090e;
-  --bg-surface: #0c101a;
-  --bg-card: #111726;
-  --bg-card-hover: #161e32;
-  --bg-glass: rgba(12, 16, 26, 0.82);
-  --bg-input: #0a0d16;
+  /* Color Palette - Modern Dark Theme */
+  --bg-canvas: #090b10;
+  --bg-surface: #0e121b;
+  --bg-card: #131824;
+  --bg-card-hover: #182030;
+  --bg-glass: rgba(9, 11, 16, 0.85);
+  --bg-input: #0b0e17;
 
-  /* Accent Tones */
-  --accent-primary: #8b5cf6;
-  --accent-hover: #7c3aed;
+  /* Accent Tones - Refined Indigo & Electric Cyan */
+  --accent-primary: #6366f1;
+  --accent-hover: #4f46e5;
   --accent-indigo: #6366f1;
   --accent-cyan: #38bdf8;
-  --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #38bdf8 100%);
-  --accent-glow: rgba(139, 92, 246, 0.28);
-  --accent-subtle: rgba(139, 92, 246, 0.12);
+  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #38bdf8 100%);
+  --accent-glow: rgba(99, 102, 241, 0.2);
+  --accent-subtle: rgba(99, 102, 241, 0.08);
 
   /* Text & Readability */
   --text-primary: #f8fafc;
@@ -30,20 +30,20 @@
   --text-muted: #64748b;
   --text-contrast: #ffffff;
 
-  /* Borders & Shadows */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.14);
-  --border-accent: rgba(139, 92, 246, 0.4);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 25px -4px rgba(139, 92, 246, 0.22);
+  /* Borders & Shadows - Modern Hairline Geometry */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(99, 102, 241, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 8px 30px -4px rgba(99, 102, 241, 0.16);
 
   /* Geometry & Metrics */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Typography */
@@ -65,12 +65,13 @@
   --bg-glass: rgba(255, 255, 255, 0.88);
   --bg-input: #ffffff;
 
-  --accent-primary: #7c3aed;
-  --accent-hover: #6d28d9;
+  --accent-primary: #6366f1;
+  --accent-hover: #4f46e5;
   --accent-indigo: #4f46e5;
   --accent-cyan: #0284c7;
-  --accent-glow: rgba(124, 58, 237, 0.16);
-  --accent-subtle: rgba(124, 58, 237, 0.08);
+  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #0284c7 100%);
+  --accent-glow: rgba(99, 102, 241, 0.14);
+  --accent-subtle: rgba(99, 102, 241, 0.06);
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
@@ -78,11 +79,11 @@
   --text-contrast: #ffffff;
 
   --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-medium: rgba(15, 23, 42, 0.16);
-  --border-accent: rgba(124, 58, 237, 0.3);
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
-  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
-  --shadow-glow: 0 0 25px -4px rgba(124, 58, 237, 0.12);
+  --border-medium: rgba(15, 23, 42, 0.14);
+  --border-accent: rgba(99, 102, 241, 0.3);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-card: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+  --shadow-glow: 0 8px 24px -4px rgba(99, 102, 241, 0.1);
 }
 
 /* Modern Reset */
