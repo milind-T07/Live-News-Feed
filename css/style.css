@@ -854,9 +854,9 @@ img {
    4. CATEGORY NAVIGATION & TRENDING STRIP
    -------------------------------------------------------------------------- */
 .category-nav-bar {
-  margin: 16px 0 20px;
+  margin: 12px 0 16px;
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 14px;
+  padding-bottom: 12px;
 }
 
 .category-scroll-container {
@@ -874,7 +874,7 @@ img {
 .category-pills {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: max-content;
   padding: 2px 0;
 }
@@ -882,16 +882,16 @@ img {
 .category-pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 18px;
+  gap: 6px;
+  padding: 6px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all var(--transition-smooth);
+  transition: all var(--transition-fast);
   user-select: none;
   white-space: nowrap;
 }
@@ -906,12 +906,12 @@ img {
   background: var(--accent-gradient);
   color: var(--text-contrast);
   border-color: transparent;
-  box-shadow: 0 2px 14px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.28);
 }
 
 .pill-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background-color: var(--accent-cyan);
 }
@@ -922,17 +922,17 @@ img {
 
 /* Trending Strip */
 .trending-strip-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .trending-strip-inner {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  padding: 7px 14px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -944,33 +944,33 @@ img {
 .trending-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.75rem;
-  font-weight: 800;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--accent-primary);
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
 .flame-icon {
-  width: 14px;
-  height: 14px;
-  color: var(--accent-cyan);
+  width: 13px;
+  height: 13px;
+  color: var(--accent-primary);
 }
 
 .trending-chips {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: nowrap;
 }
 
 .trend-chip {
-  padding: 5px 12px;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 600;
-  background-color: var(--bg-canvas);
+  font-size: 0.74rem;
+  font-weight: 500;
+  background-color: transparent;
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   cursor: pointer;
